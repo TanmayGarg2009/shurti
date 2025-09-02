@@ -199,8 +199,6 @@
       <button class="btn" onclick="prevSlide()">⏮ Prev</button>
       <button class="btn" onclick="nextSlide()">Next ⏭</button>
       <button class="btn" onclick="showMessage()">💌 Show Message</button>
-      <button class="btn" onclick="launchConfetti()">🎊 Confetti</button>
-      <button class="btn" onclick="launchFireworks()">🎆 Fireworks</button>
     </div>
 
     <!-- Music player -->
@@ -292,33 +290,22 @@
     function prevSlide() { showSlide(current - 1); }
     setInterval(nextSlide, 4000);
 
-    /* Confetti */
-    function launchConfetti() {
-      confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
-    }
 
-    /* Fireworks */
-    function launchFireworks() {
-      let duration = 3 * 1000;
-      let end = Date.now() + duration;
-      (function frame() {
-        confetti({
-          particleCount: 5,
-          angle: 60,
-          spread: 55,
-          origin: { x: 0 }
-        });
-        confetti({
-          particleCount: 5,
-          angle: 120,
-          spread: 55,
-          origin: { x: 1 }
-        });
-        if (Date.now() < end) {
-          requestAnimationFrame(frame);
-        }
-      })();
-    }
+  function launchConfetti() {
+    // Heart and star shapes 🎉
+    const heart = confetti.shapeFromText({ text: "❤️", scalar: 3 });
+    const star = confetti.shapeFromText({ text: "⭐", scalar: 3 });
+
+    confetti({
+      particleCount: 80,
+      spread: 100,
+      origin: { y: 0.6 },
+      shapes: [heart, star],
+      scalar: 2
+    });
+  }
+
+
 
     /* Music Player */
     const music = document.getElementById("bgMusic");
