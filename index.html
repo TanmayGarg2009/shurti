@@ -290,22 +290,21 @@
     function prevSlide() { showSlide(current - 1); }
     setInterval(nextSlide, 4000);
 
-
+    // Stars and Hearts
   function launchConfetti() {
-    // Heart and star shapes 🎉
-    const heart = confetti.shapeFromText({ text: "❤️", scalar: 3 });
-    const star = confetti.shapeFromText({ text: "⭐", scalar: 3 });
+    const emojis = ["❤️", "⭐"];
 
-    confetti({
-      particleCount: 80,
-      spread: 100,
-      origin: { y: 0.6 },
-      shapes: [heart, star],
-      scalar: 2
-    });
+    // Launch multiple bursts
+    for (let i = 0; i < 5; i++) {
+      confetti({
+        particleCount: 20,
+        spread: 120,
+        origin: { x: Math.random(), y: Math.random() - 0.2 },
+        emojis: emojis,   // 🎉 Use emoji particles
+        scalar: 2         // size of emoji
+      });
+    }
   }
-
-
 
     /* Music Player */
     const music = document.getElementById("bgMusic");
