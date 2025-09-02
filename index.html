@@ -25,6 +25,12 @@
       to   { text-shadow: 0 0 20px #ff80ab, 0 0 40px #ff4081; }
     }
 
+    /* Countdown */
+    #countdown {
+      font-size: 1.5rem;
+      margin: 15px 0;
+    }
+
     /* Slideshow */
     .slideshow {
       display: flex;
@@ -38,8 +44,8 @@
     }
 
     .slideshow img {
-      max-width: 90vw;    /* scale down if too wide */
-      max-height: 80vh;   /* scale down if too tall */
+      max-width: 90vw;
+      max-height: 70vh;
       border-radius: 15px;
       box-shadow: 0 8px 30px rgba(0,0,0,0.3);
       position: absolute;
@@ -94,11 +100,39 @@
       border-radius: 50%;
       background: red;
       animation: float 8s linear infinite;
+      cursor: pointer;
     }
 
     @keyframes float {
       from { transform: translateY(0) rotate(0deg); }
       to   { transform: translateY(-110vh) rotate(360deg); }
+    }
+
+    /* Music player */
+    #musicControls {
+      margin: 20px;
+    }
+    #visualizer {
+      width: 100%;
+      height: 100px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 5px;
+    }
+    .bar {
+      width: 5px;
+      background: #fff;
+      height: 20px;
+      animation: bounce 1s infinite;
+    }
+    .bar:nth-child(2) { animation-delay: 0.2s; }
+    .bar:nth-child(3) { animation-delay: 0.4s; }
+    .bar:nth-child(4) { animation-delay: 0.6s; }
+    .bar:nth-child(5) { animation-delay: 0.8s; }
+    @keyframes bounce {
+      0%, 100% { height: 20px; }
+      50% { height: 80px; }
     }
   </style>
 </head>
@@ -106,11 +140,16 @@
 
   <h1>🎉 Happy Birthday, Sis! 🎂</h1>
 
+  <!-- Countdown -->
+  <div id="countdown">⏳ Loading countdown...</div>
+
   <!-- Slideshow -->
   <div class="slideshow" id="slideshow">
     <img src="1.jpg" class="active" alt="Photo 1">
     <img src="2.jpg" alt="Photo 2">
     <img src="3.jpg" alt="Photo 3">
+    <img src="4.jpg" alt="Photo 4">
+    <img src="5.jpg" alt="Photo 5">
   </div>
 
   <!-- Controls -->
@@ -119,6 +158,7 @@
     <button class="btn" onclick="nextSlide()">Next ⏭</button>
     <button class="btn" onclick="showMessage()">💌 Show Message</button>
     <button class="btn" onclick="launchConfetti()">🎊 Confetti</button>
+    <button class="btn" onclick="launchFireworks()">🎆 Fireworks</button>
   </div>
 
   <!-- Secret Message -->
@@ -129,9 +169,43 @@
     🎂🥳🎁
   </div>
 
+  <!-- Music player -->
+  <div id="musicControls">
+    <button class="btn" onclick="toggleMusic()">🎵 Play/Pause Music</button>
+    <div id="visualizer">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+    </div>
+    <audio id="bgMusic" loop>
+      <source src="music.mp3" type="audio/mpeg">
+    </audio>
+  </div>
+
   <!-- Confetti Script -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <script>
+    /* Countdown Timer */
+    const birthdayDate = new Date("2025-09-13T00:00:00"); // 13 Sept 2025
+    function updateCountdown() {
+      const now = new Date();
+      const diff = birthdayDate - now;
+      if (diff <= 0) {
+        document.getElementById("countdown").innerText = "🎉 It's her Birthday Today! 🥳";
+      } else {
+        const days = Math.floor(diff / (1000*60*60*24));
+        const hours = Math.floor((diff / (1000*60*60)) % 24);
+        const mins = Math.floor((diff / (1000*60)) % 60);
+        const secs = Math.floor((diff / 1000) % 60);
+        document.getElementById("countdown").innerText = 
+          `⏳ ${days}d ${hours}h ${mins}m ${secs}s until the big day 🎂`;
+      }
+    }
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+
     /* Slideshow JS */
     let slides = document.querySelectorAll('.slideshow img');
     let current = 0;
@@ -141,11 +215,9 @@
       current = (index + slides.length) % slides.length;
       slides[current].classList.add('active');
     }
-
     function nextSlide() { showSlide(current + 1); }
     function prevSlide() { showSlide(current - 1); }
-
-    setInterval(nextSlide, 4000); // auto change every 4s
+    setInterval(nextSlide, 4000);
 
     /* Message reveal */
     function showMessage() {
@@ -157,17 +229,57 @@
       confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
     }
 
-    /* Balloons */
+    /* Fireworks */
+    function launchFireworks() {
+      let duration = 3 * 1000;
+      let end = Date.now() + duration;
+      (function frame() {
+        confetti({
+          particleCount: 5,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0 }
+        });
+        confetti({
+          particleCount: 5,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1 }
+        });
+        if (Date.now() < end) {
+          requestAnimationFrame(frame);
+        }
+      })();
+    }
+
+    /* Music Player */
+    const music = document.getElementById("bgMusic");
+    function toggleMusic() {
+      if (music.paused) {
+        music.play();
+      } else {
+        music.pause();
+      }
+    }
+
+    /* Balloons (interactive) */
     function createBalloon() {
       const balloon = document.createElement("div");
       balloon.className = "balloon";
       balloon.style.left = Math.random() * 100 + "vw";
       balloon.style.background = `hsl(${Math.random()*360}, 70%, 60%)`;
       balloon.style.animationDuration = (5 + Math.random()*5) + "s";
+
+      // pop when clicked
+      balloon.addEventListener("click", () => {
+        launchConfetti();
+        balloon.remove();
+      });
+
       document.body.appendChild(balloon);
       setTimeout(() => balloon.remove(), 10000);
     }
-    setInterval(createBalloon, 1000);
+    setInterval(createBalloon, 1200);
   </script>
 </body>
 </html>
