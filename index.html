@@ -25,10 +25,14 @@
       to   { text-shadow: 0 0 20px #ff80ab, 0 0 40px #ff4081; }
     }
 
-    /* Countdown */
     #countdown {
       font-size: 1.5rem;
       margin: 15px 0;
+    }
+
+    /* Hide celebration until birthday */
+    #celebration {
+      display: none;
     }
 
     /* Slideshow */
@@ -79,7 +83,6 @@
       background: #e73370;
     }
 
-    /* Hidden message */
     #secretMessage {
       display: none;
       margin: 20px auto;
@@ -143,57 +146,65 @@
   <!-- Countdown -->
   <div id="countdown">⏳ Loading countdown...</div>
 
-  <!-- Slideshow -->
-  <div class="slideshow" id="slideshow">
-    <img src="1.jpg" class="active" alt="Photo 1">
-    <img src="2.jpg" alt="Photo 2">
-    <img src="3.jpg" alt="Photo 3">
-    <img src="4.jpg" alt="Photo 4">
-    <img src="5.jpg" alt="Photo 5">
-  </div>
-
-  <!-- Controls -->
-  <div class="controls">
-    <button class="btn" onclick="prevSlide()">⏮ Prev</button>
-    <button class="btn" onclick="nextSlide()">Next ⏭</button>
-    <button class="btn" onclick="showMessage()">💌 Show Message</button>
-    <button class="btn" onclick="launchConfetti()">🎊 Confetti</button>
-    <button class="btn" onclick="launchFireworks()">🎆 Fireworks</button>
-  </div>
-
-  <!-- Secret Message -->
-  <div id="secretMessage">
-    💖 Dear Sis,  
-    Wishing you all the love, laughter, and happiness in the world.  
-    You’re the best sister anyone could ask for!  
-    🎂🥳🎁
-  </div>
-
-  <!-- Music player -->
-  <div id="musicControls">
-    <button class="btn" onclick="toggleMusic()">🎵 Play/Pause Music</button>
-    <div id="visualizer">
-      <div class="bar"></div>
-      <div class="bar"></div>
-      <div class="bar"></div>
-      <div class="bar"></div>
-      <div class="bar"></div>
+  <!-- Celebration content (hidden until birthday) -->
+  <div id="celebration">
+    <!-- Slideshow -->
+    <div class="slideshow" id="slideshow">
+      <img src="1.jpg" class="active" alt="Photo 1">
+      <img src="2.jpg" alt="Photo 2">
+      <img src="3.jpg" alt="Photo 3">
+      <img src="4.jpg" alt="Photo 4">
+      <img src="5.jpg" alt="Photo 5">
     </div>
-    <audio id="bgMusic" loop>
-      <source src="music.mp3" type="audio/mpeg">
-    </audio>
+
+    <!-- Controls -->
+    <div class="controls">
+      <button class="btn" onclick="prevSlide()">⏮ Prev</button>
+      <button class="btn" onclick="nextSlide()">Next ⏭</button>
+      <button class="btn" onclick="showMessage()">💌 Show Message</button>
+      <button class="btn" onclick="launchConfetti()">🎊 Confetti</button>
+      <button class="btn" onclick="launchFireworks()">🎆 Fireworks</button>
+    </div>
+
+    <!-- Secret Message -->
+    <div id="secretMessage">
+      💖 Dear Sis,  
+      Wishing you all the love, laughter, and happiness in the world.  
+      You’re the best sister anyone could ask for!  
+      🎂🥳🎁
+    </div>
+
+    <!-- Music player -->
+    <div id="musicControls">
+      <button class="btn" onclick="toggleMusic()">🎵 Play/Pause Music</button>
+      <div id="visualizer">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+      </div>
+      <audio id="bgMusic" loop>
+        <source src="music.mp3" type="audio/mpeg">
+      </audio>
+    </div>
   </div>
 
-  <!-- Confetti Script -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <script>
     /* Countdown Timer */
-    const birthdayDate = new Date("2025-09-13T00:00:00"); // 13 Sept 2025
+    const birthdayDate = new Date("2025-09-13T00:00:00"); // 🎂 13 Sept 2025
     function updateCountdown() {
       const now = new Date();
       const diff = birthdayDate - now;
+
       if (diff <= 0) {
         document.getElementById("countdown").innerText = "🎉 It's her Birthday Today! 🥳";
+        document.getElementById("celebration").style.display = "block";
+
+        // REMOVE THIS LINE TO TEST BEFORE THE DATE
+        // document.getElementById("celebration").style.display = "block";
+
       } else {
         const days = Math.floor(diff / (1000*60*60*24));
         const hours = Math.floor((diff / (1000*60*60)) % 24);
@@ -206,10 +217,9 @@
     setInterval(updateCountdown, 1000);
     updateCountdown();
 
-    /* Slideshow JS */
+    /* Slideshow */
     let slides = document.querySelectorAll('.slideshow img');
     let current = 0;
-
     function showSlide(index) {
       slides[current].classList.remove('active');
       current = (index + slides.length) % slides.length;
@@ -219,7 +229,7 @@
     function prevSlide() { showSlide(current - 1); }
     setInterval(nextSlide, 4000);
 
-    /* Message reveal */
+    /* Secret message */
     function showMessage() {
       document.getElementById("secretMessage").style.display = "block";
     }
@@ -262,7 +272,7 @@
       }
     }
 
-    /* Balloons (interactive) */
+    /* Balloons */
     function createBalloon() {
       const balloon = document.createElement("div");
       balloon.className = "balloon";
@@ -270,7 +280,6 @@
       balloon.style.background = `hsl(${Math.random()*360}, 70%, 60%)`;
       balloon.style.animationDuration = (5 + Math.random()*5) + "s";
 
-      // pop when clicked
       balloon.addEventListener("click", () => {
         launchConfetti();
         balloon.remove();
