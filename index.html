@@ -263,23 +263,44 @@
       }
     }
 
-    /* Balloons */
-    function createBalloon() {
-      const balloon = document.createElement("div");
-      balloon.className = "balloon";
-      balloon.style.left = Math.random() * 100 + "vw";
-      balloon.style.background = `hsl(${Math.random()*360}, 70%, 60%)`;
-      balloon.style.animationDuration = (5 + Math.random()*5) + "s";
+    /* Hearts & Stars Animation */
+    function createFloatingShape() {
+      const shape = document.createElement("div");
+      const isHeart = Math.random() > 0.5; // 50% heart, 50% star
 
-      balloon.addEventListener("click", () => {
-        launchConfetti();
-        balloon.remove();
-      });
+      if (isHeart) {
+        shape.innerHTML = "❤️";
+        shape.style.fontSize = (20 + Math.random() * 20) + "px";
+      } else {
+        shape.innerHTML = "⭐";
+        shape.style.fontSize = (15 + Math.random() * 25) + "px";
+      }
 
-      document.body.appendChild(balloon);
-      setTimeout(() => balloon.remove(), 10000);
+      shape.style.position = "absolute";
+      shape.style.zIndex = "0"; // stays behind slideshow/buttons
+      shape.style.opacity = 0.9;
+
+      // Place in one of the 4 corners
+      const corner = Math.floor(Math.random() * 4);
+      if (corner === 0) { shape.style.left = "0"; shape.style.top = "0"; }
+      if (corner === 1) { shape.style.right = "0"; shape.style.top = "0"; }
+      if (corner === 2) { shape.style.left = "0"; shape.style.bottom = "0"; }
+      if (corner === 3) { shape.style.right = "0"; shape.style.bottom = "0"; }
+
+      // Floating animation
+      shape.animate(
+        [
+          { transform: "translateY(0) scale(1)", opacity: 1 },
+          { transform: "translateY(-150vh) scale(1.5)", opacity: 0 }
+        ],
+        { duration: 8000 + Math.random() * 4000, easing: "linear", fill: "forwards" }
+      );
+
+      document.body.appendChild(shape);
+      setTimeout(() => shape.remove(), 12000);
     }
-    setInterval(createBalloon, 1200);
+
+    setInterval(createFloatingShape, 1500);
   </script>
 </body>
 </html>
