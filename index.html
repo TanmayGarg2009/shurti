@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday 🎂</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, #ff9a9e, #fad0c4);
+      text-align: center;
+      color: white;
+    }
+    h1 {
+      font-size: 4em;
+      margin-top: 50px;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+    @keyframes glow {
+      from { text-shadow: 0 0 10px #ff80ab, 0 0 20px #ff4081; }
+      to   { text-shadow: 0 0 20px #ff80ab, 0 0 40px #ff4081; }
+    }
+    .slideshow {
+      margin: 40px auto;
+      width: 300px;
+      height: 400px;
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+    }
+    .slideshow img {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      animation: fade 12s infinite;
+    }
+    .slideshow img:nth-child(1) { animation-delay: 0s; }
+    .slideshow img:nth-child(2) { animation-delay: 4s; }
+    .slideshow img:nth-child(3) { animation-delay: 8s; }
+    @keyframes fade {
+      0%,100% { opacity: 0; }
+      20%,80% { opacity: 1; }
+    }
+    .balloon {
+      position: absolute;
+      bottom: -150px;
+      width: 80px;
+      height: 100px;
+      background: red;
+      border-radius: 50% 50% 45% 55%;
+      animation: float 10s linear infinite;
+    }
+    @keyframes float {
+      from { transform: translateY(0) rotate(0deg); }
+      to { transform: translateY(-110vh) rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <h1>🎉 Happy Birthday, Sis! 🎂</h1>
+
+  <!-- Slideshow -->
+  <div class="slideshow">
+    <img src="1.jpg" alt="Photo 1">
+    <img src="2.jpg" alt="Photo 2">
+    <img src="3.jpg" alt="Photo 3">
+  </div>
+
+  <!-- Confetti -->
+  <canvas class="confetti"></canvas>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script>
+    confetti({ particleCount: 200, spread: 120, origin: { y: 0.6 } });
+
+    // Balloons
+    function createBalloon() {
+      const balloon = document.createElement("div");
+      balloon.className = "balloon";
+      balloon.style.left = Math.random() * 100 + "vw";
+      balloon.style.background = `hsl(${Math.random()*360}, 70%, 60%)`;
+      balloon.style.animationDuration = (5 + Math.random()*5) + "s";
+      document.body.appendChild(balloon);
+      setTimeout(() => balloon.remove(), 10000);
+    }
+    setInterval(createBalloon, 800);
+  </script>
+</body>
+</html>
