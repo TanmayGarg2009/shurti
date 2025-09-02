@@ -3,82 +3,160 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Happy Birthday 🎂</title>
+  <title>Happy Birthday 🎉</title>
   <style>
     body {
       margin: 0;
-      padding: 0;
-      overflow: hidden;
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(to right, #ff9a9e, #fad0c4);
-      text-align: center;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
       color: white;
+      text-align: center;
+      overflow-x: hidden;
     }
+
     h1 {
-      font-size: 4em;
-      margin-top: 50px;
+      font-size: 3rem;
+      margin: 20px 0;
       animation: glow 2s ease-in-out infinite alternate;
     }
+
     @keyframes glow {
       from { text-shadow: 0 0 10px #ff80ab, 0 0 20px #ff4081; }
       to   { text-shadow: 0 0 20px #ff80ab, 0 0 40px #ff4081; }
     }
+
+    /* Slideshow */
     .slideshow {
-      margin: 40px auto;
-      width: 300px;
-      height: 400px;
+      margin: 20px auto;
+      width: 720px;
+      height: 1280px;
+      max-width: 90vw;
+      max-height: 70vh;
       position: relative;
       border-radius: 20px;
       overflow: hidden;
       box-shadow: 0 8px 30px rgba(0,0,0,0.3);
     }
+
     .slideshow img {
       position: absolute;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       object-fit: cover;
       opacity: 0;
-      animation: fade 12s infinite;
+      transition: opacity 1s;
     }
-    .slideshow img:nth-child(1) { animation-delay: 0s; }
-    .slideshow img:nth-child(2) { animation-delay: 4s; }
-    .slideshow img:nth-child(3) { animation-delay: 8s; }
-    @keyframes fade {
-      0%,100% { opacity: 0; }
-      20%,80% { opacity: 1; }
+
+    .slideshow img.active {
+      opacity: 1;
     }
+
+    .controls {
+      margin-top: 10px;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      margin: 5px;
+      background: #ff4081;
+      border: none;
+      border-radius: 10px;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .btn:hover {
+      transform: scale(1.1);
+      background: #e73370;
+    }
+
+    /* Hidden message */
+    #secretMessage {
+      display: none;
+      margin: 20px auto;
+      max-width: 600px;
+      font-size: 1.2rem;
+      background: rgba(255,255,255,0.1);
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    /* Balloons */
     .balloon {
       position: absolute;
       bottom: -150px;
-      width: 80px;
-      height: 100px;
+      width: 60px;
+      height: 80px;
+      border-radius: 50%;
       background: red;
-      border-radius: 50% 50% 45% 55%;
-      animation: float 10s linear infinite;
+      animation: float 8s linear infinite;
     }
+
     @keyframes float {
       from { transform: translateY(0) rotate(0deg); }
-      to { transform: translateY(-110vh) rotate(360deg); }
+      to   { transform: translateY(-110vh) rotate(360deg); }
     }
   </style>
 </head>
 <body>
+
   <h1>🎉 Happy Birthday, Sis! 🎂</h1>
 
   <!-- Slideshow -->
-  <div class="slideshow">
-    <img src="1.jpg" alt="Photo 1">
-    <img src="2.jpg" alt="Photo 2">
-    <img src="3.jpg" alt="Photo 3">
+  <div class="slideshow" id="slideshow">
+    <img src="photo1.jpg" class="active" alt="Photo 1">
+    <img src="photo2.jpg" alt="Photo 2">
+    <img src="photo3.jpg" alt="Photo 3">
   </div>
 
-  <!-- Confetti -->
-  <canvas class="confetti"></canvas>
+  <!-- Controls -->
+  <div class="controls">
+    <button class="btn" onclick="prevSlide()">⏮ Prev</button>
+    <button class="btn" onclick="nextSlide()">Next ⏭</button>
+    <button class="btn" onclick="showMessage()">💌 Show Message</button>
+    <button class="btn" onclick="launchConfetti()">🎊 Confetti</button>
+  </div>
+
+  <!-- Secret Message -->
+  <div id="secretMessage">
+    💖 Dear Sis,  
+    Wishing you all the love, laughter, and happiness in the world.  
+    You’re the best sister anyone could ask for!  
+    🎂🥳🎁
+  </div>
+
+  <!-- Confetti Script -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <script>
-    confetti({ particleCount: 200, spread: 120, origin: { y: 0.6 } });
+    /* Slideshow JS */
+    let slides = document.querySelectorAll('.slideshow img');
+    let current = 0;
 
-    // Balloons
+    function showSlide(index) {
+      slides[current].classList.remove('active');
+      current = (index + slides.length) % slides.length;
+      slides[current].classList.add('active');
+    }
+
+    function nextSlide() { showSlide(current + 1); }
+    function prevSlide() { showSlide(current - 1); }
+
+    setInterval(nextSlide, 4000); // auto change every 4s
+
+    /* Message reveal */
+    function showMessage() {
+      document.getElementById("secretMessage").style.display = "block";
+    }
+
+    /* Confetti */
+    function launchConfetti() {
+      confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
+    }
+
+    /* Balloons */
     function createBalloon() {
       const balloon = document.createElement("div");
       balloon.className = "balloon";
@@ -88,7 +166,7 @@
       document.body.appendChild(balloon);
       setTimeout(() => balloon.remove(), 10000);
     }
-    setInterval(createBalloon, 800);
+    setInterval(createBalloon, 1000);
   </script>
 </body>
 </html>
