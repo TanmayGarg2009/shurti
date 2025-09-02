@@ -1,711 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- =========================================================
-       SHRUTI BIRTHDAY SITE — FANCY VERSION (LOCKED UNTIL DATE)
-       ========================================================= -->
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Happy Birthday, Shruti 🎉</title>
-
-  <!-- =====================
-       GLOBAL BASE STYLES
-       ===================== -->
+  <meta charset="UTF-8">
+  <title>Happy Birthday Shruti 🎉</title>
   <style>
-    :root{
-      /* Theme palette */
-      --pink:#ff4d88;
-      --pink-2:#ff7aa7;
-      --purple:#a864fd;
-      --yellow:#ffe066;
-      --mint:#7cf7c7;
-      --sky:#8ad7ff;
-      --bg-1:#ff9a9e;      /* gradient start */
-      --bg-2:#fad0c4;      /* gradient end   */
-      --white:#ffffff;
-      --shadow: rgba(0,0,0,.28);
-
-      /* Sizes */
-      --radius-xl: 24px;
-      --padding: 16px;
-      --gap: 14px;
-
-      /* Timings */
-      --slow: 1200ms;
-      --fast: 280ms;
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      height: 100vh;
+      overflow: hidden;
     }
-
-    /* Reset-ish */
-    * { box-sizing: border-box; }
-    html, body { height: 100%; }
-
-    body{
-      margin:0;
-      font-family: ui-rounded, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-      background: linear-gradient(135deg, var(--bg-1), var(--bg-2));
-      color: var(--white);
-      overflow-x:hidden;
-    }
-
-    a, button{ -webkit-tap-highlight-color: transparent; }
-
-    /* Utility wrappers */
-    .screen-center{
-      min-height:100vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-      padding: clamp(16px, 4vw, 48px);
-    }
-
-    /* ======================================================
-       BEFORE-BIRTHDAY VIEW (only message, NO animations)
-       ====================================================== */
-    #preGate{
-      display:flex; /* visible by default; JS hides on/after date */
-      align-items:center;
-      justify-content:center;
-      flex-direction:column;
-      gap: 12px;
-    }
-
-    .big-msg{
-      font-weight:800;
-      line-height:1.1;
-      letter-spacing:.5px;
-      text-shadow: 0 6px 24px var(--shadow);
-      /* Huge responsive size */
-      font-size: clamp(28px, 6vw, 64px);
-      max-width: 18ch;
-      margin: 0 auto;
-    }
-
-    .tiny-note{
-      opacity:.9;
-      font-size: clamp(12px, 2.6vw, 16px);
-    }
-
-    /* ======================================================
-       CELEBRATION VIEW (hidden before date)
-       ====================================================== */
-    #celebration{
-      display:none;  /* JS shows on/after date */
-      position: relative;
-      isolation: isolate; /* so floating layers stack inside */
-      min-height: 100vh;
-      padding-bottom: 64px; /* space for mobile safe area */
-    }
-
-    /* Header / Title with animated gradient text */
-    .hero{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      flex-direction:column;
-      gap: var(--gap);
-      padding-top: clamp(16px, 4vw, 40px);
-    }
-
-    .title{
-      margin:0;
-      text-align:center;
-      font-weight: 900;
-      letter-spacing: .6px;
-      /* Big responsive size */
-      font-size: clamp(28px, 8vw, 64px);
-      /* fancy gradient text */
-      background: linear-gradient(90deg, #ff80ab, #ffd166, #8ec5fc, #e0c3fc, #ff80ab);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      filter: drop-shadow(0 10px 24px rgba(0,0,0,.25));
-      animation: hueLoop 8s linear infinite;
-    }
-
-    @keyframes hueLoop{
-      0%{ filter: drop-shadow(0 10px 24px rgba(0,0,0,.25)) hue-rotate(0deg); }
-      100%{ filter: drop-shadow(0 10px 24px rgba(0,0,0,.25)) hue-rotate(360deg); }
-    }
-
-    .subtitle{
-      margin:0;
-      font-size: clamp(14px, 2.6vw, 20px);
-      opacity:.95;
-      text-shadow: 0 4px 16px var(--shadow);
-    }
-
-    /* ================
-       CONTROL BAR
-       ================ */
-    .controls{
-      display:flex;
-      flex-wrap:wrap;
-      gap: 10px;
-      align-items:center;
-      justify-content:center;
-      margin: 18px auto 10px;
-      max-width: 920px;
-      padding: 0 var(--padding);
-    }
-
-    .btn{
-      appearance:none;
-      border:0;
-      outline:0;
-      padding: 10px 16px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.16);
+    h1 {
+      font-size: 3rem;
+      margin-top: 40px;
       color: #fff;
-      font-weight: 700;
-      letter-spacing:.3px;
-      cursor:pointer;
-      box-shadow: 0 6px 18px rgba(0,0,0,.22);
-      transition: transform var(--fast), background var(--fast), box-shadow var(--fast);
-      backdrop-filter: blur(6px);
+      text-shadow: 2px 2px 5px #0003;
     }
-    .btn:hover{ transform: translateY(-2px); background: rgba(255,255,255,.22); box-shadow: 0 10px 24px rgba(0,0,0,.26); }
-    .btn:active{ transform: translateY(0); }
-
-    .btn--accent{ background: linear-gradient(135deg, var(--pink), var(--purple)); }
-    .btn--mint  { background: linear-gradient(135deg, var(--mint), var(--sky)); color:#16363f; font-weight:800; }
-    .btn--gold  { background: linear-gradient(135deg, #ffd166, #ffaf61); color:#4d3300; font-weight:800; }
-
-    /* =========================
-       SLIDESHOW (contain-fit)
-       ========================= */
-    .slideshow-wrap{
-      margin: 16px auto;
-      padding: 12px;
-      max-width: min(92vw, 980px);
-      border-radius: var(--radius-xl);
-      background: rgba(255,255,255,.08);
-      box-shadow: 0 12px 36px rgba(0,0,0,.28);
-      backdrop-filter: blur(8px);
+    #notYet {
+      font-size: 1.5rem;
+      margin-top: 100px;
+      color: #fff;
     }
-
-    .slideshow{
-      position: relative;
-      width: 100%;
-      /* 16:9-ish responsive stage; height scales with width */
-      aspect-ratio: 16/9;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      overflow:hidden;
-      border-radius: calc(var(--radius-xl) - 6px);
-      background: radial-gradient(100% 100% at 50% 0%, rgba(255,255,255,.25), rgba(255,255,255,.05) 40%, rgba(0,0,0,.15) 100%);
-    }
-
-    .slide{
-      position:absolute;
-      inset:0;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      opacity:0;
-      transition: opacity 900ms ease;
-      will-change: opacity;
-      padding: 6px;
-    }
-    .slide.active{ opacity:1; }
-
-    .slide img{
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
-      object-fit: contain; /* show full photo without cropping */
-      border-radius: 16px;
-      box-shadow: 0 14px 36px rgba(0,0,0,.35);
-      background:#00000020;
-    }
-
-    .slide-caption{
-      position:absolute;
-      right:12px;
-      bottom:10px;
-      background: rgba(0,0,0,.42);
-      border-radius: 10px;
-      padding: 6px 10px;
-      font-size: 12px;
-    }
-
-    .nav-arrows{
-      position:absolute;
-      inset:0;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      pointer-events:none;
-      padding: 8px;
-    }
-    .nav-arrows button{
-      pointer-events:auto;
-      width:44px; height:44px; border-radius: 50%;
-      display:grid; place-items:center;
-      font-size: 20px;
-      box-shadow: 0 8px 22px rgba(0,0,0,.25);
-    }
-
-    /* =========================
-       MESSAGE CARD (reveal)
-       ========================= */
-    .card{
-      margin: 18px auto 0;
-      max-width: min(92vw, 880px);
-      padding: clamp(16px, 4vw, 28px);
-      border-radius: var(--radius-xl);
-      background: rgba(255,255,255,.10);
-      box-shadow: 0 12px 36px rgba(0,0,0,.28);
-      backdrop-filter: blur(8px);
-      text-align:left;
-      line-height:1.6;
-    }
-    .card h3{
-      margin:0 0 10px;
-      font-size: clamp(18px, 3.8vw, 26px);
-    }
-    .card p{ margin: 0; font-size: clamp(14px, 3vw, 18px); }
-
-    /* Hide message body by default; toggled via JS */
-    .card .body{ display:none; }
-    .card.open .body{ display:block; }
-
-    /* =========================
-       FLOATING BALLOONS LAYER
-       ========================= */
-    .balloon{
-      position: absolute;
-      bottom:-140px;
-      width: 60px;
-      height: 80px;
-      border-radius: 50% 50% 45% 45%;
-      box-shadow: inset -8px -12px 20px rgba(0,0,0,.15), 0 10px 30px rgba(0,0,0,.25);
-      transform-origin: 50% 90%;
-      will-change: transform, opacity;
-      cursor: pointer;
-    }
-    .string{
-      position:absolute;
-      left: 50%;
-      top: 70px;
-      width: 2px;
-      height: 90px;
-      transform: translateX(-50%);
-      background: rgba(0,0,0,.25);
-    }
-
-    @keyframes floatUp {
-      0%   { transform: translateY(0) rotate(0deg); opacity: 0; }
-      5%   { opacity: 1; }
-      100% { transform: translateY(-110vh) rotate(360deg); opacity: 1; }
-    }
-
-    /* =========================
-       HEARTS / STARS BACKDROP
-       ========================= */
-    #sparkle-layer{
-      position: fixed;
-      inset: 0;
       pointer-events: none;
-      z-index: 0;
     }
-
-    .spark{
-      position:absolute;
-      width: 10px; height:10px;
-      border-radius:50%;
-      background: currentColor;
-      opacity:.9;
-      filter: drop-shadow(0 0 6px currentColor);
-      animation: drift var(--t, 8s) linear forwards;
-    }
-
-    @keyframes drift{
-      0% { transform: translateY(0) scale(0.6); opacity:.95; }
-      100%{ transform: translateY(-100vh) scale(1.1) rotate(180deg); opacity:.2; }
-    }
-
-    /* =========================
-       FIREWORKS CANVAS
-       ========================= */
-    #fx-canvas{
+    #musicBtn {
       position: fixed;
-      inset:0;
-      pointer-events:none;
-      z-index: 2;
-    }
-
-    /* Lift celebration content above sparkles, below fx-canvas */
-    #celebration{ z-index: 1; position: relative; }
-
-    /* Footer info */
-    .footer-note{
-      text-align:center;
-      opacity:.85;
-      font-size: 12px;
-      margin-top: 16px;
-    }
-
-    /* Responsive tweaks for very narrow screens */
-    @media (max-width:420px){
-      .nav-arrows button{ width:40px; height:40px; font-size:18px; }
-      .btn{ padding: 9px 14px; }
+      bottom: 20px;
+      right: 20px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 12px;
+      background: #fff;
+      cursor: pointer;
+      font-size: 1rem;
     }
   </style>
 </head>
 <body>
+  <h1 id="title"></h1>
+  <p id="notYet"></p>
+  <canvas id="confetti"></canvas>
 
-  <!-- =================================================
-       PRE-GATE (VISIBLE BEFORE 13 SEPT 2025 ONLY)
-       ================================================= -->
-  <section id="preGate" class="screen-center" aria-live="polite">
-    <div class="big-msg">⏳ It is not your birthday yet, Shruti ❤️</div>
-    <div class="tiny-note">(come back on 13 September!)</div>
-  </section>
+  <!-- Background Music -->
+  <audio id="bgMusic" src="music.mp3" loop></audio>
+  <button id="musicBtn">🎵 Play / Pause</button>
 
-  <!-- =================================================
-       CELEBRATION CONTENT (UNLOCKED ON/AFTER THE DATE)
-       ================================================= -->
-  <section id="celebration" role="main">
-    <!-- Sparkle background layer (hearts/stars) -->
-    <div id="sparkle-layer" aria-hidden="true"></div>
-
-    <!-- Fireworks / confetti canvas (overlay) -->
-    <canvas id="fx-canvas"></canvas>
-
-    <!-- HERO -->
-    <header class="hero">
-      <h1 class="title">🎉 Happy Birthday, Shruti! 🎂</h1>
-      <p class="subtitle">Another year of joy, laughter, and the most amazing memories ✨</p>
-
-      <!-- Controls row -->
-      <div class="controls">
-        <button class="btn btn--accent" id="btnPrev">⏮ Prev</button>
-        <button class="btn btn--accent" id="btnNext">Next ⏭</button>
-        <button class="btn btn--mint"   id="btnWish">💌 Show Message</button>
-        <button class="btn btn--gold"   id="btnConfetti">🎊 Confetti</button>
-        <button class="btn btn--accent" id="btnFireworks">🎆 Fireworks</button>
-        <button class="btn"             id="btnMusic">🎵 Play/Pause Music</button>
-      </div>
-    </header>
-
-    <!-- SLIDESHOW -->
-    <div class="slideshow-wrap">
-      <div class="slideshow" id="slideshow">
-        <!-- Slides are static here; add/remove <figure> blocks to match 1.jpg..N -->
-        <figure class="slide active">
-          <img src="1.jpg" alt="Photo 1" />
-          <figcaption class="slide-caption">#1</figcaption>
-        </figure>
-        <figure class="slide">
-          <img src="2.jpg" alt="Photo 2" />
-          <figcaption class="slide-caption">#2</figcaption>
-        </figure>
-        <figure class="slide">
-          <img src="3.jpg" alt="Photo 3" />
-          <figcaption class="slide-caption">#3</figcaption>
-        </figure>
-        <figure class="slide">
-          <img src="4.jpg" alt="Photo 4" />
-          <figcaption class="slide-caption">#4</figcaption>
-        </figure>
-        <figure class="slide">
-          <img src="5.jpg" alt="Photo 5" />
-          <figcaption class="slide-caption">#5</figcaption>
-        </figure>
-
-        <!-- Nav arrows overlay -->
-        <div class="nav-arrows" aria-hidden="true">
-          <button class="btn" id="arrowPrev">‹</button>
-          <button class="btn" id="arrowNext">›</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- MESSAGE CARD (collapsible) -->
-    <article id="wishCard" class="card" aria-live="polite">
-      <h3>For you, Shruti 💖</h3>
-      <div class="body">
-        <p>
-          Wishing you the happiest birthday! May your day sparkle with laughter,
-          your year overflow with wins, and your life be full of calm, courage,
-          and crazy-good surprises. Thank you for being you — brilliant, kind,
-          and one-of-a-kind. 🌟
-        </p>
-      </div>
-    </article>
-
-    <p class="footer-note">Made with love — and way too much CSS — just for you 💫</p>
-
-    <!-- Hidden audio (starts only after date & user click if browser blocks autoplay) -->
-    <audio id="bgMusic" preload="auto" loop>
-      <!-- Replace music.mp3 with your file -->
-      <source src="music.mp3" type="audio/mpeg" />
-    </audio>
-  </section>
-
-  <!-- Lightweight confetti library (safe to load now; we only trigger after date) -->
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-
-  <!-- =================================================
-       MASTER SCRIPT — NOTHING RUNS BEFORE THE DATE
-       ================================================= -->
   <script>
-    /* -------------------------------------------------
-       BIRTHDAY GATE (local time)
-       ------------------------------------------------- */
-    // Set gate to 13 September 2025 00:00:00 (local machine time).
-    // If you need to test early, uncomment the TEST override below.
-    const GATE_DATE = new Date("2025-09-01T00:00:00");
+    // 🎂 Set birthday date
+    const birthday = new Date("2025-09-10"); // change date here
+    const today = new Date();
 
-    // // >>> TEST: UNLOCK NOW (REMOVE/COMMENT OUT AFTER TESTING) <<<
-    // const GATE_DATE = new Date("2000-01-01T00:00:00");
+    const titleEl = document.getElementById("title");
+    const notYetEl = document.getElementById("notYet");
+    const canvas = document.getElementById("confetti");
+    const ctx = canvas.getContext("2d");
 
-    /** Elements */
-    const preGateEl = document.getElementById('preGate');
-    const celebrationEl = document.getElementById('celebration');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
-    /** Gate check — show/hide correct view */
-    function applyGate(){
-      const now = new Date();
-      if (now >= GATE_DATE){
-        preGateEl.style.display = 'none';
-        celebrationEl.style.display = 'block';
-        startCelebration(); // boot everything
-      }else{
-        preGateEl.style.display = 'flex';
-        celebrationEl.style.display = 'none';
-      }
-    }
+    // 🎵 Music
+    const musicEl = document.getElementById("bgMusic");
+    const musicBtn = document.getElementById("musicBtn");
 
-    // Run once on load, and also check every minute in case midnight passes while page is open.
-    applyGate();
-    setInterval(applyGate, 60 * 1000);
-
-    /* -------------------------------------------------
-       CELEBRATION BOOTSTRAP (runs only after gate)
-       ------------------------------------------------- */
-    function startCelebration(){
-      // Guard: prevent double-booting if applyGate runs again
-      if (startCelebration._booted) return;
-      startCelebration._booted = true;
-
-      // 1) Init slideshow
-      initSlideshow();
-
-      // 2) Wire controls (wish toggle, confetti, fireworks, music)
-      wireControls();
-
-      // 3) Start ambient sparkles (hearts/stars)
-      startSparkles();
-
-      // 4) Start gentle balloon spawner (click to pop)
-      startBalloons();
-
-      // 5) Try to auto-play music (may be blocked by browser; user can tap Play)
-      tryAutoplayMusic();
-    }
-
-    /* -------------------------------------------------
-       SLIDESHOW (contain-fit, auto + manual)
-       ------------------------------------------------- */
-    function initSlideshow(){
-      const slides = Array.from(document.querySelectorAll('.slide'));
-      let current = 0;
-      let autoTimer = null;
-      const AUTO_MS = 4000;
-
-      function show(idx){
-        slides[current].classList.remove('active');
-        current = (idx + slides.length) % slides.length;
-        slides[current].classList.add('active');
-      }
-
-      function next(){ show(current + 1); }
-      function prev(){ show(current - 1); }
-
-      function startAuto(){
-        stopAuto();
-        autoTimer = setInterval(next, AUTO_MS);
-      }
-      function stopAuto(){
-        if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
-      }
-
-      // Start
-      startAuto();
-
-      // Expose for buttons
-      initSlideshow.next = next;
-      initSlideshow.prev = prev;
-      initSlideshow.pause = stopAuto;
-      initSlideshow.play = startAuto;
-
-      // Keyboard support
-      window.addEventListener('keydown', (e)=>{
-        if (document.activeElement && ['INPUT','TEXTAREA','BUTTON'].includes(document.activeElement.tagName)) return;
-        if (e.key === 'ArrowRight') next();
-        if (e.key === 'ArrowLeft')  prev();
-      });
-    }
-
-    /* -------------------------------------------------
-       CONTROLS: buttons for actions
-       ------------------------------------------------- */
-    function wireControls(){
-      const $ = (id)=>document.getElementById(id);
-
-      // Slideshow nav
-      $('btnNext').addEventListener('click', ()=> initSlideshow.next());
-      $('btnPrev').addEventListener('click', ()=> initSlideshow.prev());
-      $('arrowNext').addEventListener('click', ()=> initSlideshow.next());
-      $('arrowPrev').addEventListener('click', ()=> initSlideshow.prev());
-
-      // Wish card toggle
-      const card = document.getElementById('wishCard');
-      $('btnWish').addEventListener('click', ()=>{
-        card.classList.toggle('open');
-      });
-
-      // Confetti burst
-      $('btnConfetti').addEventListener('click', miniConfetti);
-
-      // Fireworks show (3 seconds)
-      $('btnFireworks').addEventListener('click', fireworksShow);
-
-      // Music toggle
-      $('btnMusic').addEventListener('click', toggleMusic);
-    }
-
-    /* -------------------------------------------------
-       CONFETTI + FIREWORKS
-       ------------------------------------------------- */
-    function miniConfetti(){
-      confetti({
-        particleCount: 200,
-        spread: 90,
-        origin: { y: 0.6 }
-      });
-    }
-
-    function fireworksShow(){
-      const duration = 3000;
-      const end = Date.now() + duration;
-
-      (function frame(){
-        confetti({ particleCount: 6, angle: 60, spread: 55, origin:{x:0} });
-        confetti({ particleCount: 6, angle: 120, spread: 55, origin:{x:1} });
-        if (Date.now() < end) requestAnimationFrame(frame);
-      })();
-    }
-
-    /* -------------------------------------------------
-       SPARKLES (hearts/stars floating in background)
-       ------------------------------------------------- */
-    function startSparkles(){
-      const layer = document.getElementById('sparkle-layer');
-      const COLORS = ['#ffd166','#ff80ab','#8ec5fc','#e0c3fc','#7cf7c7','#8ad7ff','#fff'];
-      const SHAPES = ['●','◆','♥','★']; // decorative
-
-      function spawn(){
-        const s = document.createElement('div');
-        s.className = 'spark';
-        // random color & timing
-        s.style.color = COLORS[Math.floor(Math.random()*COLORS.length)];
-        s.style.left = Math.random()*100 + 'vw';
-        s.style.bottom = '-10px';
-        s.style.setProperty('--t', (6 + Math.random()*8) + 's');
-        // size
-        const size = 6 + Math.random()*10;
-        s.style.width = size+'px';
-        s.style.height= size+'px';
-
-        // Optionally, some sparks become text hearts/stars
-        if (Math.random() < 0.25){
-          s.textContent = SHAPES[Math.floor(Math.random()*SHAPES.length)];
-          s.style.width = 'auto';
-          s.style.height = 'auto';
-          s.style.fontSize = (10 + Math.random()*14) + 'px';
-        }
-
-        layer.appendChild(s);
-        setTimeout(()=> s.remove(), 12000);
-      }
-
-      // spawn rhythm
-      const id = setInterval(spawn, 220);
-      startSparkles.stop = ()=> clearInterval(id);
-    }
-
-    /* -------------------------------------------------
-       BALLOONS (click to pop → confetti)
-       ------------------------------------------------- */
-    function startBalloons(){
-      const COLORS = [
-        'linear-gradient(135deg, #ff7aa7, #ff4d88)',
-        'linear-gradient(135deg, #8ad7ff, #5aa8ff)',
-        'linear-gradient(135deg, #7cf7c7, #40e0a0)',
-        'linear-gradient(135deg, #ffd166, #ffaf61)',
-        'linear-gradient(135deg, #e0c3fc, #a864fd)'
-      ];
-
-      function spawnBalloon(){
-        const b = document.createElement('div');
-        b.className = 'balloon';
-        b.style.left = Math.random()*100 + 'vw';
-        b.style.background = COLORS[Math.floor(Math.random()*COLORS.length)];
-        b.style.animation = `floatUp ${8 + Math.random()*6}s linear forwards`;
-        b.style.zIndex = 1 + Math.floor(Math.random()*2);
-        // little shine
-        b.style.boxShadow = 'inset -10px -16px 26px rgba(0,0,0,.22), 0 12px 36px rgba(0,0,0,.35)';
-
-        // string
-        const s = document.createElement('div');
-        s.className = 'string';
-        b.appendChild(s);
-
-        // pop action
-        b.addEventListener('click', ()=>{
-          confetti({
-            particleCount: 80,
-            spread: 70,
-            origin: { x: Math.min(0.98, Math.max(0.02, b.offsetLeft / window.innerWidth)), y: 0.9 }
-          });
-          b.remove();
-        });
-
-        document.body.appendChild(b);
-        setTimeout(()=> b.remove(), 14000);
-      }
-
-      const id = setInterval(spawnBalloon, 1100);
-      startBalloons.stop = ()=> clearInterval(id);
-    }
-
-    /* -------------------------------------------------
-       MUSIC PLAYER (autoplay attempt after gate)
-       ------------------------------------------------- */
-    const musicEl = document.getElementById('bgMusic');
-
-    function tryAutoplayMusic(){
-      // Some browsers block autoplay — we try quietly
-      if (!musicEl) return;
-      musicEl.volume = 0.6;
-      musicEl.play().catch(()=> {
-        // If blocked, user can press the button
-        // (we do nothing here)
-      });
-    }
-
-    function toggleMusic(){
-      if (!musicEl) return;
+    musicBtn.onclick = () => {
       if (musicEl.paused) {
+        musicEl.volume = 0.6;
         musicEl.play();
+        musicBtn.textContent = "⏸ Pause Music";
       } else {
         musicEl.pause();
+        musicBtn.textContent = "🎵 Play Music";
       }
+    };
+
+    // 🎉 Confetti setup
+    let confetti = [];
+    for (let i = 0; i < 150; i++) {
+      confetti.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 6 + 2,
+        d: Math.random() * 10,
+        color: `hsl(${Math.random()*360},100%,50%)`,
+        tilt: Math.random() * 10 - 10
+      });
     }
 
+    function drawConfetti() {
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      confetti.forEach(c => {
+        ctx.beginPath();
+        ctx.arc(c.x, c.y, c.r, 0, Math.PI*2, false);
+        ctx.fillStyle = c.color;
+        ctx.fill();
+      });
+      updateConfetti();
+    }
+
+    function updateConfetti() {
+      confetti.forEach(c => {
+        c.y += Math.cos(c.d) + 1 + c.r/2;
+        c.x += Math.sin(c.d);
+        if (c.y > canvas.height) {
+          c.y = -10;
+          c.x = Math.random() * canvas.width;
+        }
+      });
+    }
+
+    function animate() {
+      drawConfetti();
+      requestAnimationFrame(animate);
+    }
+
+    // 🎂 Show birthday page or waiting message
+    if (today.toDateString() === birthday.toDateString() || today > birthday) {
+      titleEl.textContent = "🎉 Happy Birthday Shruti! 🎂";
+      notYetEl.textContent = "";
+      animate();
+      musicEl.volume = 0.6;
+      musicEl.play().catch(()=>{});
+    } else {
+      titleEl.textContent = "";
+      notYetEl.textContent = "⌛ It’s not your birthday yet, Shruti ❤️";
+      canvas.style.display = "none";
+      musicBtn.style.display = "none";
+    }
   </script>
 </body>
 </html>
