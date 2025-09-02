@@ -219,24 +219,52 @@
     </div>
   </div>
 
-  <!-- Secret Birthday Page -->
-  <div id="secretPage">
-    <button id="returnBtn" onclick="returnToMain()">⬅ Return</button>
-    <div class="candles">🕯️🕯️🕯️</div>
-    <div class="cake">🎂</div>
-    <h2>Happy Birthday, Shruti! 💖</h2>
-    <p class="wish">May your special day be filled with love, laughter, and endless joy! 🥳🎁✨</p>
-    <p class="wish">🌸 Dear Shruti,</p>
-    <p class="wish">On this special day, I just want to remind you how amazing you are.</p>
-    <p class="wish">You’re not only my sister but also my best friend, my partner-in-crime, and someone who always makes life brighter.</p>
-    <p class="wish">May your year ahead be full of laughter, love, dreams coming true, and all the happiness you truly deserve.</p>
-    <p class="wish">No words can explain how much you mean to me, but I hope this little surprise shows just a part of it.</p>
-    <p class="wish">Happy Birthday, Shruti! 🎂✨</p>
-    <p class="wish">Here’s to many more beautiful memories together 💕</p>
-    <p class="wish">With love,</p>
-    <p class="wish">💖 Your Brother (Tanmay) 💖</p>
+<!-- Secret Birthday Page -->
+<div id="secretPage" style="display:none; text-align:center; padding:20px; background:linear-gradient(to bottom right, #ff9a9e, #fad0c4); min-height:100vh;">
 
-  </div>
+  <!-- Return Button -->
+  <button id="returnBtn" onclick="returnToMain()" 
+          style="position:absolute; top:20px; left:20px; padding:10px 15px; border:none; border-radius:8px; background:#ff4d79; color:white; cursor:pointer; font-size:14px;">
+    ⬅ Return
+  </button>
+
+  <!-- Cake & Candles -->
+  <div class="candles" style="font-size:2rem; margin-top:40px;">🕯️🕯️🕯️</div>
+  <div class="cake" style="font-size:5rem; margin:10px 0;">🎂</div>
+
+  <!-- Title -->
+  <h2 style="color:white; font-size:2rem; margin:15px 0;">Happy Birthday, Shruti! 💖</h2>
+
+  <!-- Wishes (line by line) -->
+  <p class="wish">May your special day be filled with love, laughter, and endless joy! 🥳🎁✨</p>
+  <p class="wish">🌸 Dear Shruti,</p>
+  <p class="wish">On this special day, I just want to remind you how amazing you are.</p>
+  <p class="wish">You’re not only my sister but also my best friend, my partner-in-crime, and someone who always makes life brighter.</p>
+  <p class="wish">May your year ahead be full of laughter, love, dreams coming true, and all the happiness you truly deserve.</p>
+  <p class="wish">No words can explain how much you mean to me, but I hope this little surprise shows just a part of it.</p>
+  <p class="wish">Happy Birthday, Shruti! 🎂✨</p>
+  <p class="wish">Here’s to many more beautiful memories together 💕</p>
+  <p class="wish">With love,</p>
+  <p class="wish">💖 Your Brother (Tanmay) 💖</p>
+
+</div>
+
+<style>
+  /* Style for wishes */
+  .wish {
+    display: block;              /* Each line separate */
+    text-align: center;
+    margin: 12px auto;
+    padding: 10px 20px;
+    max-width: 700px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 15px;
+    color: #fff;
+    font-size: 1.2em;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  }
+</style>
+
 
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <script>
