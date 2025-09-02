@@ -274,6 +274,10 @@
       if (now >= birthdayDate) {
         document.getElementById("beforeBirthday").style.display = "none";
         document.getElementById("celebration").style.display = "block";
+
+        // 🎉 Start confetti automatically on main page
+        launchConfetti();
+        setInterval(launchConfetti, 5000); // repeat every 5s
       }
     }
     checkBirthday();
