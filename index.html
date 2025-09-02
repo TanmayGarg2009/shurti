@@ -83,34 +83,6 @@
       background: #e73370;
     }
 
-    #secretMessage {
-      display: none;
-      margin: 20px auto;
-      max-width: 600px;
-      font-size: 1.2rem;
-      background: rgba(255,255,255,0.1);
-      padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    }
-
-    /* Balloons */
-    .balloon {
-      position: absolute;
-      bottom: -150px;
-      width: 60px;
-      height: 80px;
-      border-radius: 50%;
-      background: red;
-      animation: float 8s linear infinite;
-      cursor: pointer;
-    }
-
-    @keyframes float {
-      from { transform: translateY(0) rotate(0deg); }
-      to   { transform: translateY(-110vh) rotate(360deg); }
-    }
-
     /* Music player */
     #musicControls {
       margin: 20px;
@@ -136,6 +108,70 @@
     @keyframes bounce {
       0%, 100% { height: 20px; }
       50% { height: 80px; }
+    }
+
+    /* Secret Birthday Page */
+    #secretPage {
+      display: none;
+      text-align: center;
+      padding: 40px 20px;
+      background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+      height: 100vh;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #returnBtn {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 10px;
+      background: #ff4081;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      transition: background 0.3s;
+    }
+    #returnBtn:hover {
+      background: #e73370;
+    }
+
+    .cake {
+      font-size: 8rem;
+      margin: 40px 0 20px;
+      animation: bounceCake 1s infinite;
+      text-shadow: 0 0 20px #fff, 0 0 40px #ff4081, 0 0 60px #ff80ab;
+    }
+    @keyframes bounceCake {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+
+    .candles {
+      font-size: 2rem;
+      animation: flicker 0.5s infinite alternate;
+    }
+    @keyframes flicker {
+      from { opacity: 1; text-shadow: 0 0 5px yellow, 0 0 15px orange; }
+      to   { opacity: 0.6; text-shadow: 0 0 10px orange, 0 0 20px red; }
+    }
+
+    .wish {
+      font-size: 1.6rem;
+      margin-top: 20px;
+      background: rgba(255,255,255,0.2);
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      display: inline-block;
+      animation: fadeIn 2s ease-in;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
@@ -167,14 +203,6 @@
       <button class="btn" onclick="launchFireworks()">🎆 Fireworks</button>
     </div>
 
-    <!-- Secret Message -->
-    <div id="secretMessage">
-      💖 Dear Sis,  
-      Wishing you all the love, laughter, and happiness in the world.  
-      You’re the best sister anyone could ask for!  
-      🎂🥳🎁
-    </div>
-
     <!-- Music player -->
     <div id="musicControls">
       <button class="btn" onclick="toggleMusic()">🎵 Play/Pause Music</button>
@@ -191,19 +219,24 @@
     </div>
   </div>
 
+  <!-- Secret Birthday Page -->
+  <div id="secretPage">
+    <button id="returnBtn" onclick="returnToMain()">⬅ Return</button>
+    <div class="candles">🕯️🕯️🕯️</div>
+    <div class="cake">🎂</div>
+    <h2>Happy Birthday, Shruti! 💖</h2>
+    <p class="wish">May your special day be filled with love, laughter, and endless joy! 🥳🎁✨</p>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <script>
     /* Unlock only on birthday */
-    const birthdayDate = new Date("2025-09-01T00:00:00"); // 🎂 13 Sept 2025
+    const birthdayDate = new Date("2025-09-01T00:00:00"); // 🎂 Change date if needed
     function checkBirthday() {
       const now = new Date();
-
       if (now >= birthdayDate) {
         document.getElementById("beforeBirthday").style.display = "none";
         document.getElementById("celebration").style.display = "block";
-
-        // REMOVE THIS LINE TO TEST EARLY
-        // document.getElementById("celebration").style.display = "block";
       }
     }
     checkBirthday();
@@ -219,11 +252,6 @@
     function nextSlide() { showSlide(current + 1); }
     function prevSlide() { showSlide(current - 1); }
     setInterval(nextSlide, 4000);
-
-    /* Secret message */
-    function showMessage() {
-      document.getElementById("secretMessage").style.display = "block";
-    }
 
     /* Confetti */
     function launchConfetti() {
@@ -263,45 +291,18 @@
       }
     }
 
-    /* Hearts & Stars Animation */
-    function createFloatingShape() {
-      const shape = document.createElement("div");
-      const isHeart = Math.random() > 0.5; // 50% heart, 50% star
-
-      if (isHeart) {
-        shape.innerHTML = "❤️";
-        shape.style.fontSize = (20 + Math.random() * 25) + "px";
-      } else {
-        shape.innerHTML = "⭐";
-        shape.style.fontSize = (15 + Math.random() * 20) + "px";
-      }
-
-      shape.style.position = "absolute";
-      shape.style.left = Math.random() * 100 + "vw";
-      shape.style.top = "100vh";
-      shape.style.opacity = 0.9;
-      shape.style.zIndex = "0";
-
-      shape.animate(
-        [
-          { transform: "translateY(0) scale(1)", opacity: 1 },
-          { transform: "translateY(-120vh) scale(1.5)", opacity: 0 }
-        ],
-        { duration: 6000 + Math.random() * 3000, easing: "linear", fill: "forwards" }
-      );
-
-      document.body.appendChild(shape);
-      setTimeout(() => shape.remove(), 10000);
+    /* Switch to Secret Cake Page */
+    function showMessage() {
+      document.getElementById("celebration").style.display = "none";
+      document.getElementById("secretPage").style.display = "block";
+      launchConfetti();
     }
 
-    // Spawn more frequently
-    setInterval(() => {
-      let count = Math.random() > 0.7 ? 3 : 1; // sometimes 3 at once
-      for (let i = 0; i < count; i++) {
-        createFloatingShape();
-      }
-    }, 400); // new one every 0.4s
-
+    /* Return to main slideshow */
+    function returnToMain() {
+      document.getElementById("secretPage").style.display = "none";
+      document.getElementById("celebration").style.display = "block";
+    }
   </script>
 </body>
 </html>
