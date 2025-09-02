@@ -277,25 +277,31 @@
       }
 
       shape.style.position = "absolute";
-      shape.style.left = Math.random() * 100 + "vw"; // anywhere horizontally
-      shape.style.top = "100vh"; // start at bottom
+      shape.style.left = Math.random() * 100 + "vw";
+      shape.style.top = "100vh";
       shape.style.opacity = 0.9;
-      shape.style.zIndex = "0"; // behind slideshow/buttons
+      shape.style.zIndex = "0";
 
-      // Floating animation
       shape.animate(
         [
           { transform: "translateY(0) scale(1)", opacity: 1 },
           { transform: "translateY(-120vh) scale(1.5)", opacity: 0 }
         ],
-        { duration: 7000 + Math.random() * 3000, easing: "linear", fill: "forwards" }
+        { duration: 6000 + Math.random() * 3000, easing: "linear", fill: "forwards" }
       );
 
       document.body.appendChild(shape);
-      setTimeout(() => shape.remove(), 11000);
+      setTimeout(() => shape.remove(), 10000);
     }
 
-    setInterval(createFloatingShape, 1200);
+    // Spawn more frequently
+    setInterval(() => {
+      let count = Math.random() > 0.7 ? 3 : 1; // sometimes 3 at once
+      for (let i = 0; i < count; i++) {
+        createFloatingShape();
+      }
+    }, 400); // new one every 0.4s
+
   </script>
 </body>
 </html>
