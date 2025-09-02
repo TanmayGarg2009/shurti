@@ -25,9 +25,9 @@
       to   { text-shadow: 0 0 20px #ff80ab, 0 0 40px #ff4081; }
     }
 
-    #countdown {
+    #beforeBirthday {
       font-size: 1.5rem;
-      margin: 15px 0;
+      margin-top: 40px;
     }
 
     /* Hide celebration until birthday */
@@ -143,8 +143,8 @@
 
   <h1>🎉 Happy Birthday, Sis! 🎂</h1>
 
-  <!-- Countdown -->
-  <div id="countdown">⏳ Loading countdown...</div>
+  <!-- Before Birthday Message -->
+  <div id="beforeBirthday">⏳ It is not your birthday yet, Shruti! 💖</div>
 
   <!-- Celebration content (hidden until birthday) -->
   <div id="celebration">
@@ -192,30 +192,20 @@
 
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <script>
-    /* Countdown Timer */
+    /* Unlock only on birthday */
     const birthdayDate = new Date("2025-09-13T00:00:00"); // 🎂 13 Sept 2025
-    function updateCountdown() {
+    function checkBirthday() {
       const now = new Date();
-      const diff = birthdayDate - now;
 
-      if (diff <= 0) {
-        document.getElementById("countdown").innerText = "🎉 It's her Birthday Today! 🥳";
+      if (now >= birthdayDate) {
+        document.getElementById("beforeBirthday").style.display = "none";
         document.getElementById("celebration").style.display = "block";
 
-        // REMOVE THIS LINE TO TEST BEFORE THE DATE
+        // REMOVE THIS LINE TO TEST EARLY
         // document.getElementById("celebration").style.display = "block";
-
-      } else {
-        const days = Math.floor(diff / (1000*60*60*24));
-        const hours = Math.floor((diff / (1000*60*60)) % 24);
-        const mins = Math.floor((diff / (1000*60)) % 60);
-        const secs = Math.floor((diff / 1000) % 60);
-        document.getElementById("countdown").innerText = 
-          `⏳ ${days}d ${hours}h ${mins}m ${secs}s until the big day 🎂`;
       }
     }
-    setInterval(updateCountdown, 1000);
-    updateCountdown();
+    checkBirthday();
 
     /* Slideshow */
     let slides = document.querySelectorAll('.slideshow img');
